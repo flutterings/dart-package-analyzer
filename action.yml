@@ -7,6 +7,14 @@ branding:
   icon: "feather"
 
 inputs:
+  flutter_version:
+    description: "The version of Flutter to use"
+    required: false
+    default: "latest"
+  flutter_channel:
+    description: "The channel of Flutter to use"
+    required: false
+    default: "stable"
   githubToken:
     description: "Token to connect to GitHub. Use secrets.GITHUB_TOKEN"
     required: true
@@ -18,31 +26,62 @@ inputs:
 outputs:
   total:
     description: "Total score of the package"
+    value: '${{ steps.parse-output.outputs.TOTAL }}'
   total_max:
     description: "Maximum score the package can get"
+    value: '${{ steps.parse-output.outputs.TOTAL_MAX }}'
   conventions:
     description: "Score for the category 'Follow Dart file conventions'"
+    value: '${{ steps.parse-output.outputs.CONVENTIONS }}'
   conventions_max:
     description: "Maximum score for the category 'Follow Dart file conventions'"
+    value: '${{ steps.parse-output.outputs.CONVENTIONS_MAX }}'
   documentation:
     description: "Score for the category 'Provide documentation'"
+    value: '${{ steps.parse-output.outputs.DOCUMENTATION }}'
   documentation_max:
     description: "Maximum score for the category 'Provide documentation'"
+    value: '${{ steps.parse-output.outputs.DOCUMENTATION_MAX }}'
   platforms:
     description: "Score for the category 'Support multiple platforms'"
+    value: '${{ steps.parse-output.outputs.PLATFORMS }}'
   platforms_max:
     description: "Maximum score for the category 'Support multiple platforms'"
+    value: '${{ steps.parse-output.outputs.PLATFORMS_MAX }}'
   analysis:
     description: "Score for the category 'Static analysis'"
+    value: '${{ steps.parse-output.outputs.ANALYSIS }}'
   analysis_max:
     description: "Maximum score for the category 'Static analysis'"
+    value: '${{ steps.parse-output.outputs.ANALYSIS_MAX }}'
   dependencies:
     description: "Score for the category 'Support up-to-date dependencies'"
+    value: '${{ steps.parse-output.outputs.DEPENDENCIES }}'
   dependencies_max:
     description: "Maximum score for the category 'Support up-to-date dependencies'"
+    value: '${{ steps.parse-output.outputs.DEPENDENCIES_MAX }}'
   json_output:
     description: "The pana output in JSON format"
+    value: '${{ steps.parse-output.outputs.JSON_OUTPUT }}'
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: 'composite'
+  steps:
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ inputs.flutter_version }}
+        cache: true
+        channel: ${{ inputs.flutter_channel }}
+    - name: Run PANA
+      id: pana
+      run: dart pub global activate pana && pana --no-warning --source path:${{ inputs.relativePath }} --json >> pana_output.json
+      shell: bash
+    - name: make script executable
+      run: chmod +x $GITHUB_ACTION_PATH/parse_output.sh
+      shell: bash
+    - name: Parse PANA output
+      id: parse-output
+      run: $GITHUB_ACTION_PATH/parse_output.sh
+      shell: bash
+    
