@@ -21,8 +21,10 @@ This action uses its own Dart container. I recommend you to run it in a separate
 
 ### Inputs
 
-* `githubToken`  
-Required to post a report on GitHub. *Note:* the secret [`GITHUB_TOKEN`](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token) is already provided by GitHub and you don't have to set it up yourself.
+* `flutter_version`  
+The version of Flutter to use. If not set, version 3.13.9 will be used.
+* `flutter_channel`
+The channel of Flutter to use. If not set, the stable channel will be used.
 * `relativePath`  
 If your package isn't at the root of the repository, set this input to indicate its location.
 
@@ -41,10 +43,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2 # required
 
-      - uses: axel-op/dart-package-analyzer@v3
+      - uses: flutterings/dart-package-analyzer@v1
         with:
-          # Required:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional:
+          flutter_version: 3.16.0 # default: 3.13.9
+          # Optional:
+          flutter_channel: dev # default: stable
           # Optional:
           relativePath: packages/mypackage/
 ```
@@ -98,11 +102,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: axel-op/dart-package-analyzer@v3
+      - uses: flutterings/dart-package-analyzer@v1
         # set an id for the current step
         id: analysis
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # You can then use this id to retrieve the outputs in the next steps.
       # The following step shows how to exit the workflow with an error if the total score in percentage is below 50:
