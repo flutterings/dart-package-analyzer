@@ -18,9 +18,10 @@ fi
 echo "JSON_OUTPUT=$JSON_OUTPUT"
 
 SECTIONS=$(echo "$JSON_OUTPUT" | jq -c '.report.sections | map({id: .id, points: .grantedPoints, maxPoints: .maxPoints})')
+SCORES=$(echo "$JSON_OUTPUT" | jq -c '.scores')
 
-TOTAL=$(echo "$SECTIONS" | jq -c 'map(.points) | add')
-TOTAL_MAX=$(echo "$SECTIONS" | jq -c 'map(.maxPoints) | add')
+TOTAL=$(echo "$SECTIONS" | jq -c 'map(.grantedPoints)')
+TOTAL_MAX=$(echo "$SECTIONS" | jq -c 'map(.maxPoints)')
 
 CONVENTION=$(echo "$SECTIONS" | jq '.[] | select(.id == "convention") | .points')
 CONVENTION_MAX=$(echo "$SECTIONS" | jq '.[] | select(.id == "convention") | .maxPoints')
@@ -52,7 +53,5 @@ DEPENDENCIES_MAX=$(echo "$SECTIONS" | jq '.[] | select(.id == "dependencies") | 
     echo "DEPENDENCIES=$DEPENDENCIES"
     echo "DEPENDENCIES_MAX=$DEPENDENCIES_MAX"
 } >> $GITHUB_OUTPUT
-
-echo "GITHUB_OUTPUT=$GITHUB_OUTPUT"
 
 exit 0
