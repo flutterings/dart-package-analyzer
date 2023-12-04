@@ -1,6 +1,6 @@
 name: "Dart/Flutter Package Analyzer (PANA)"
 description: "Performs static analysis, linting, formatting, to compute the Pub score of your Dart/Flutter package."
-author: "axel-op"
+author: "esarbanis"
 
 branding:
   color: "blue"
@@ -10,7 +10,7 @@ inputs:
   flutter_version:
     description: "The version of Flutter to use"
     required: false
-    default: "latest"
+    default: "3.13.9"
   flutter_channel:
     description: "The channel of Flutter to use"
     required: false
