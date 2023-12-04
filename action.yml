@@ -1,4 +1,4 @@
-name: "Dart/Flutter Package Analyzer"
+name: "Dart/Flutter Package Analyzer (PANA)"
 description: "Performs static analysis, linting, formatting, to compute the Pub score of your Dart/Flutter package."
 author: "axel-op"
 
