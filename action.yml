@@ -77,11 +77,9 @@ runs:
       run: flutter config --no-analytics
       shell: bash
     - name: Install PANA
-      id: pana
-      run: dart pub global activate pana && pana --no-warning --source path:${{ inputs.relativePath }} --json >> pana_output.json
+      run: dart pub global activate pana
       shell: bash
     - name: Run PANA
-      id: pana
       run: dart pub global run pana --no-warning ${{ inputs.relativePath }} --json >> pana_output.json
       shell: bash
     - name: make script executable
