@@ -15,9 +15,6 @@ inputs:
     description: "The channel of Flutter to use"
     required: false
     default: "stable"
-  githubToken:
-    description: "Token to connect to GitHub. Use secrets.GITHUB_TOKEN"
-    required: true
   relativePath:
     description: "Path of the package relatively to the root of the repository"
     required: false
