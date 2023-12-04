@@ -73,9 +73,16 @@ runs:
         flutter-version: ${{ inputs.flutter_version }}
         cache: true
         channel: ${{ inputs.flutter_channel }}
-    - name: Run PANA
+    - name: Disable Flutter Analytics
+      run: flutter config --no-analytics
+      shell: bash
+    - name: Install PANA
       id: pana
       run: dart pub global activate pana && pana --no-warning --source path:${{ inputs.relativePath }} --json >> pana_output.json
+      shell: bash
+    - name: Run PANA
+      id: pana
+      run: dart pub global run pana --no-warning ${{ inputs.relativePath }} --json >> pana_output.json
       shell: bash
     - name: make script executable
       run: chmod +x $GITHUB_ACTION_PATH/parse_output.sh
