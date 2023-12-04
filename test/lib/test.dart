@@ -1,14 +1,14 @@
 library test;
 
 class Test {
-  final int valueTest;
+  final int? valueTest;
   const Test({
      @deprecated this.valueTest,
   });
 }
 
 class Test2 {
-  final int  valueA;
+  final int? valueA;
   const Test2({
     @deprecated this.valueA,
   });
@@ -17,7 +17,7 @@ class Test2 {
 /// A Calculator.
 class Calculator {
   /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+  int addOne(int? value) => value == null ? 0 : value + 1;
 }
 
 class Test3 {
